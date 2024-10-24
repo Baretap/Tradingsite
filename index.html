@@ -1,12 +1,118 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="fi">
 <head>
-    <title>My Crypto Trading Site</title>
+    <meta charset="UTF-8">
+    <title>Tap Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to left, #2c5364, #203a43, #0f2027);
+        }
+        .content {
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to left, #2c5364, #203a43, #0f2027);
+        }
+        header {
+            background: linear-gradient(to right, silver, #C0C0C0);
+            color: white;
+            padding: 1px;
+            text-align: center;
+            border: 1px solid #C0C0C0;
+            border-radius: 5px;
+            box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: black;
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 0px 0px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 1px;
+        }
+        nav a {
+            color: white;
+            padding: 5px 5px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+        }
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        nav img {
+            max-width: 70px;
+            max-height: 70px;
+        }
+        .score-box {
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            text-align: center;
+            background: url('your-background-image.jpg') no-repeat center center;
+            background-size: cover;
+            color: white; /* Tämä väri erottuu hyvin taustasta */
+        }
+    </style>
+    <script>
+        function getScore() {
+            return localStorage.getItem('playerScore') || 0;
+        }
+        function increaseGameScore() {
+            let gameScore = parseInt(localStorage.getItem('gameScore')) || 0;
+            gameScore++;
+            localStorage.setItem('gameScore', gameScore);
+            document.getElementById('gameScore').innerText = 'Pisteet: ' + gameScore;
+            var image = document.getElementById('clickableImage');
+            image.classList.add('pressed');
+            setTimeout(function() {
+                image.classList.remove('pressed');
+            }, 100);
+        }
+        function claimScore() {
+            let gameScore = parseInt(localStorage.getItem('gameScore')) || 0;
+            let walletScore = parseInt(getScore());
+            walletScore += gameScore;
+            localStorage.setItem('playerScore', walletScore);
+            localStorage.setItem('gameScore', 0);
+            document.getElementById('score').innerText = '$MZC ' + walletScore;
+            document.getElementById('gameScore').innerText = 'Pisteet: 0';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('score').innerText = '$MZC ' + getScore();
+            document.getElementById('gameScore').innerText = 'Pisteet: ' + (localStorage.getItem('gameScore') || 0);
+        });
+    </script>
 </head>
 <body>
-    <h1>Welcome to My Crypto Trading Site</h1>
-    <p>Manage and trade your cryptocurrencies here.</p>
-<script src="script.js"></script>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html"><img src="/storage/emulated/0/Download/home.gif" alt="HOME"></a></li>
+                <li><a href="games.html"><img src="/storage/emulated/0/Download/games.gif" alt="GAMES"></a></li>
+                <li><a href="bareTapwallet.html"><img src="/storage/emulated/0/Download/wallet.gif" alt="WALLET"></a></li>
+                <li><a href="#"><img src="/storage/emulated/0/Download/about.gif" alt="ABOUT"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="score-box" id="score">$MZC 0</div>
+    <div class="image-container">
+        <img src="/storage/emulated/0/Download/medi.png" id="clickableImage" alt="Klikattava kuva" style="width:300px;height:300px;" onclick="increaseGameScore()">
+    </div>
+    <div class="score-box" id="gameScore">Pisteet: 0</div>
+    <button onclick="claimScore()">Nosta</button>
 </body>
 </html>
